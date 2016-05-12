@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>AntlrBuild</id>
+    <version>4.5.1.1</version>
+    <title>AntlrBuild</title>
+    <authors>the.sh.developer</authors>
+    <owners></owners>
+    <description>
+      Calls the antlr tool v 4.5.1 to generates c# lexer, parser and visitor classes from antlr g4 files. Java is required and the "java" command should be in the system path for this command to work. (Note the generated classes are automatically included in the compilation even though they don't appear in visual studio)
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <language>en-US</language>
+    <projectUrl>https://github.com/shravanrn/AntlrBuild</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/BSD-3-Clause/</licenseUrl>
+    <dependencies>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="build\" target="build" />
+    <file src="lib\" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+  </files>
+</package>
