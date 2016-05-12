@@ -15,7 +15,7 @@
       <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)BaseListener.cs')" />
       <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)BaseVisitor.cs')" />
       <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)Lexer.cs')" />
-      <AntlrOutputFilesNoDups Include="@(AntlrOutputFiles)" Exclude="@(Content);@(None)" Condition="Exists('%(AntlrOutputFiles.Identity)')" />
+      <AntlrOutputFilesNoDups Include="@(AntlrOutputFiles)" Exclude="@(Content);@(None);@(Compile)" Condition="Exists('%(AntlrOutputFiles.Identity)')" />
     </ItemGroup>
     <Message Importance="normal" Text="AntlrOutputFiles : @(AntlrOutputFiles)" />
     <Message Importance="normal" Text="AntlrOutputFilesNoDups : @(AntlrOutputFilesNoDups)" />
