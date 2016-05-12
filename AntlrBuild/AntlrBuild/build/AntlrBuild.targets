@@ -1,0 +1,46 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <Target Name="GetAntlrFiles" AfterTargets="BeforeBuild">
+    <ItemGroup>
+      <AntlrFilesForGen Include="@(Content)" Condition="'%(Content.Extension)' == '.g4'"/>
+      <AntlrFilesForGen Include="@(None)" Condition="'%(None.Extension)' == '.g4'"/>
+    </ItemGroup>
+
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -Noninteractive -Command &quot;&amp;&apos;$(MSBuildThisFileDirectory)\..\Tools\AntlrBuildG4.ps1&apos; -AntlrFile &apos;%(AntlrFilesForGen.FullPath)&apos;&quot;" />
+    
+    <ItemGroup>
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)Listener.cs')" />
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)Parser.cs')" />
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)Visitor.cs')" />
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)BaseListener.cs')" />
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)BaseVisitor.cs')" />
+      <AntlrOutputFiles Include="@(AntlrFilesForGen -> '%(RelativeDir)%(Filename)Lexer.cs')" />
+      <AntlrOutputFilesNoDups Include="@(AntlrOutputFiles)" Exclude="@(Content);@(None)" Condition="Exists('%(AntlrOutputFiles.Identity)')" />
+    </ItemGroup>
+    <Message Importance="normal" Text="AntlrOutputFiles : @(AntlrOutputFiles)" />
+    <Message Importance="normal" Text="AntlrOutputFilesNoDups : @(AntlrOutputFilesNoDups)" />
+
+    <ItemGroup>
+      <Compile Include="@(AntlrOutputFilesNoDups)" />
+    </ItemGroup>
+   
+  </Target>
+
+  <Target Name="AntlrClean" AfterTargets="Clean">
+    <ItemGroup>
+      <AntlrFilesForDelete Include="@(Content)" Condition="'%(Content.Extension)' == '.g4'"/>
+      <AntlrFilesForDelete Include="@(None)" Condition="'%(None.Extension)' == '.g4'"/>
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)Listener.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)Parser.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)Visitor.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)BaseListener.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)BaseVisitor.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)Lexer.cs')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename).tokens')" />
+      <AntlrOutputFilesToDelete Include="@(AntlrFilesForDelete -> '%(RelativeDir)%(Filename)Lexer.tokens')" />
+      <AntlrOutputFilesToDeleteNoDups Include="@(AntlrOutputFilesToDelete)" Condition="Exists('%(AntlrOutputFilesToDelete.Identity)')" />
+    </ItemGroup>
+    <Delete Files="@(AntlrOutputFilesToDeleteNoDups)" ContinueOnError="true" />
+  </Target>
+
+</Project>
